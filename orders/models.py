@@ -86,7 +86,7 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2)
     original_price = models.DecimalField(max_digits=12, decimal_places=2)
     total_price = models.DecimalField(max_digits=12, decimal_places=2)
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField()
     
     @property
     def total_price(self):
@@ -109,6 +109,19 @@ class OrderItemAddon(models.Model):
             validators.MinValueValidator(1),
         ]
     )
+    
+    @property
+    def total_price(self):
+        try:
+            return self.product_addon.price * self.quantity
+        except:
+            return 0
+    
+    class Meta:
+        db_table = 'order_item_addons'
+        managed = True
+        verbose_name = 'Order Item Addon'
+        verbose_name_plural = 'Order Item Addons'
 
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='payment')

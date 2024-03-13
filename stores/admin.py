@@ -3,7 +3,11 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models import Avg, Count
 from .models import Store, OpeningHours, AddressStore
 from reviews.models import ReviewStore, ReviewProduct
-from products.models import Product
+from products.models import Product, Category
+
+class CategoryInline(admin.TabularInline):
+    model = Category
+    extra = 1
 
 class ReviewStoreInline(admin.TabularInline):
     model = ReviewStore
@@ -29,7 +33,7 @@ class AddressStoreInline(admin.StackedInline):
     extra = 1
 
 class StoreAdmin(admin.ModelAdmin):
-    inlines = [OpeningHoursInline, AddressStoreInline, ProductInline, ReviewStoreInline]
+    inlines = [OpeningHoursInline, AddressStoreInline, ProductInline, ReviewStoreInline, CategoryInline]
     list_display = ['name', 'user', 'created_at_regional', 'average_rating', 'total_products', 'total_reviews']
     list_filter = ['created_at', 'activate_loyalty']
     list_display_links = ['name', 'user']
@@ -57,3 +61,5 @@ class StoreAdmin(admin.ModelAdmin):
     average_rating.short_description = _('Média de Avaliações')
 
 admin.site.register(Store, StoreAdmin)
+
+admin.site.register(AddressStore)

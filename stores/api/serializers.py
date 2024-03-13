@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from products.api.serializers import ProductSerializer
 from stores.models import Store, AddressStore, OpeningHours
 
 class OpeningHoursSerializer(serializers.ModelSerializer):
@@ -13,7 +14,8 @@ class AddressStoreSerializer(serializers.ModelSerializer):
 
 class StoreSerializer(serializers.ModelSerializer):
     opening_hours = OpeningHoursSerializer(many=True, read_only=True)
-    address = AddressStoreSerializer(read_only=True)
+    addressstore = AddressStoreSerializer(many=False, read_only=True)
+    products = ProductSerializer(many=True, read_only=True)
 
     class Meta:
         model = Store

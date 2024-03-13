@@ -10,6 +10,15 @@ from django.utils.timezone import localtime
 from accounts.models import User
 from django.utils.translation import gettext_lazy as _
 
+class StoreManager(models.Manager):
+    def stores_open_now(self, store) -> bool:
+        """ Verifica se a loja está aberta no momento. """
+        now = localtime().time()
+        day_of_week = calendar.day_name[localtime().weekday()]
+        opening_hours = store.opening_hours.get(day_of_week=day_of_week)
+        return opening_hours.is_open and opening_hours.opening_time < now and opening_hours.closing_time > now
+        
+
 class Store(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(_("Nome da loja"),max_length=64, db_index=True, unique=True)
@@ -21,8 +30,10 @@ class Store(models.Model):
     activate_loyalty = models.BooleanField(_("Ativar Fidelidade ?:"),default=False)
     slug = models.SlugField(_("Slug da loja para o redirecionamento, sera criado auto."), unique=True, blank=True, null=True, editable=False)
     
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
+    created_at = models.DateTimeField(_("Created at"), auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    
+    objects = StoreManager()
     
     @property
     def created_at_regional(self):
@@ -68,6 +79,9 @@ class AddressStore(models.Model):
     @property
     def updated_at_regional(self):
         return localtime(self.updated_at).strftime("%d/%m/%Y %H:%M:%S")
+    
+    def __str__(self) -> str:
+        return f"{self.street_address} - {self.city} - {self.state}"
     
     class Meta:
         db_table = 'addresses_store'

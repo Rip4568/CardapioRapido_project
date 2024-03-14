@@ -6,7 +6,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
 
 DJANGO_APPS = [
     'accounts',
@@ -65,7 +65,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CardapioRapido_project.wsgi.application'
+WSGI_APPLICATION = 'CardapioRapido_project.wsgi.app'
 
 
 # Database

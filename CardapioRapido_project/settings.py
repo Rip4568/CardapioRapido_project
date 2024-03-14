@@ -2,7 +2,7 @@ from pathlib import Path
 from decouple import config, Csv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-wc*oaq#l5q_9mk7!$pszc=+%gl12rz2zcs3(p6msoctf)iqc2t'
+SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
@@ -22,7 +22,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'django_extensions',
     'rest_framework',
-    
+    'corsheaders',
 ]
 
 INSTALLED_APPS = [
@@ -38,6 +38,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -45,6 +46,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'CardapioRapido_project.urls'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {

@@ -7,12 +7,13 @@ from core.models import TimeStampModel
 
 
 class User(AbstractUser):
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True, blank=True, null=True)
     newsletter = models.BooleanField(_("Newsletter"), default=False)
     email = models.EmailField(_("Email"), unique=True)
     phone_number = models.CharField(max_length=16, unique=True, null=False)
     name = models.CharField(_("Name"), max_length=255, null=True, blank=True)
+    
+    created_at = models.DateTimeField(_("Created at"), auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True, blank=True, null=True)
     
     @property
     def created_at_regional(self):

@@ -8,6 +8,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('stores.api.urls_api')),
     path('api/', include('products.api.urls_api')),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
 ]
 
 # Adicione as URLs estáticas apenas no modo de desenvolvimento
